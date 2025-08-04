@@ -13,32 +13,27 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class ExceptionsHandler {
 
-    //BAD REQUEST - 400
     @ExceptionHandler(BadRequestException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.BAD_REQUEST) // 400
     public ErrorDTO handleBadRequest(BadRequestException exception) {
         return new ErrorDTO(exception.getMessage(), LocalDateTime.now());
     }
 
-    //BAD REQUEST - ERRORI DI VALIDAZIONE - 400
     @ExceptionHandler(ValidationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.BAD_REQUEST) // 400
     public ErrorsWithListDTO handleValidationErrors(ValidationException exception) {
         return new ErrorsWithListDTO(exception.getMessage(), LocalDateTime.now(), exception.getErrorMessages());
     }
 
-    //aggiungo l'errore
-    //UNAUTHORIZED - 401
     @ExceptionHandler(UnauthorizedException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED) // 401
     public ErrorDTO handleUnauthorized(UnauthorizedException exception) {
         exception.printStackTrace();
         return new ErrorDTO(exception.getMessage(), LocalDateTime.now());
     }
 
-    //NOTFOUNDEXCEPTION// - 404
     @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.NOT_FOUND) // 404
     public ErrorDTO handleNotFound(NotFoundException exception) {
         return new ErrorDTO(exception.getMessage(), LocalDateTime.now());
     }
@@ -50,9 +45,8 @@ public class ExceptionsHandler {
         return new ErrorDTO("Authorization denied", LocalDateTime.now());
     }
 
-    //ECCEZIONI NON GESTITE SINGOLARMENTE - 500
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) // 500
     public ErrorDTO handleServerError(Exception exception) {
         exception.printStackTrace();//questo mi stampa in console lo stack trace per capire dove sta l'errore
         return new ErrorDTO("Ooops, we have a problem!", LocalDateTime.now());
