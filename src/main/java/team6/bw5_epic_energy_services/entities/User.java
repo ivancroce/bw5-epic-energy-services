@@ -18,11 +18,17 @@ public class User {
     @GeneratedValue
     @Setter(AccessLevel.NONE)
     private UUID id;
+    @Column(name = "username")
     private String username;
+    @Column(name = "email")
     private String email;
+    @Column(name = "password")
     private String password;
+    @Column(name = "name")
     private String name;
+    @Column(name = "surname")
     private String surname;
+    @Column(name = "avatar")
     private String avatar;
     @ManyToMany
     @JoinTable(

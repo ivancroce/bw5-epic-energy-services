@@ -1,9 +1,6 @@
 package team6.bw5_epic_energy_services.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import team6.bw5_epic_energy_services.entities.enums.ClientType;
 
@@ -22,36 +19,34 @@ public class Customer {
     @Column(name = "customer_id", nullable = false)
     @Setter(AccessLevel.NONE)
     private UUID id;
-    @NotEmpty(message = "Company Name is required")
+    @Column(name = "company_name")
     private String companyName;
-
+    @Column(name = "vat_number")
     private String vatNumb;
-    @Email
-    @NotEmpty(message = "Company email is required")
+    @Column(name = "email")
     private String email;
-    @NotNull(message = "Customer's acceptance date is required")
+    @Column(name = "insert_date")
     private LocalDate insertDate;
-
+    @Column(name = "last_contact_date")
     private LocalDate lastContactDate;
-    @NotNull(message = "Annual revenue is required")
+    @Column(name = "annual_revenue")
     private Double annualRevenue;
-    @Email
-    @NotEmpty(message = "Company PEC is required")
+    @Column(name = "pec")
     private String pec;
-
+    @Column(name = "phone_number")
     private String phoneNumb;
-    @Email
-    @NotEmpty(message = "Contact email is required")
+    @Column(name = "contact_email")
     private String contactEmail;
-    @NotEmpty(message = "Contact Name is required")
+    @Column(name = "contact_first_name")
     private String contactFirstName;
-    @NotEmpty(message = "Contact Surname is required")
+    @Column(name = "contact_last_name")
     private String contactLastName;
-
+    @Column(name = "contact_phone_number")
     private String contactPhoneNumb;
-
+    @Column(name = "company_logo")
     private String companyLogo;
     @Enumerated(EnumType.STRING)
+    @Column(name = "client_type")
     private ClientType clientType;
 
 //    @OneToOne

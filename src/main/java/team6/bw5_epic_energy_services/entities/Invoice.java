@@ -1,7 +1,6 @@
 package team6.bw5_epic_energy_services.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -19,11 +18,11 @@ public class Invoice {
     @Column(name = "invoice_id", nullable = false)
     @Setter(AccessLevel.NONE)
     private UUID id;
-    @NotNull(message = "Date is required")
+    @Column(name = "date")
     private LocalDate date;
-    @NotNull(message = "Amount is required")
+    @Column(name = "amount")
     private Double amount;
-
+    @Column(name = "number")
     private int number;
     @ManyToOne
     @JoinColumn(name = "invoice_status_id", nullable = false)

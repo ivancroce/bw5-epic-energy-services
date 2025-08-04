@@ -1,9 +1,6 @@
 package team6.bw5_epic_energy_services.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.UUID;
@@ -19,6 +16,7 @@ public class Role {
     @GeneratedValue
     @Setter(AccessLevel.NONE)
     private UUID id;
+    @Column(name = "name")
     private String name;
 
     public Role(String name) {

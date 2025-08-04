@@ -1,7 +1,6 @@
 package team6.bw5_epic_energy_services.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 import java.util.UUID;
@@ -18,7 +17,7 @@ public class InvoiceStatus {
     @Column(name = "invoice_id", nullable = false)
     @Setter(AccessLevel.NONE)
     private UUID id;
-    @NotEmpty(message = "Status name is required")
+    @Column(name = "status_name")
     private String statusName;
 
     public InvoiceStatus(String statusName) {
