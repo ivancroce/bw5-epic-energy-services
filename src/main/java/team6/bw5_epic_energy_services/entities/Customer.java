@@ -18,7 +18,7 @@ import java.util.UUID;
 @ToString
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "customer_id", nullable = false)
     @Setter(AccessLevel.NONE)
     private UUID id;
@@ -56,12 +56,12 @@ public class Customer {
 
 //    @OneToOne
 //    @ManyToOne
-//    @JoinColumn(name = "legal_address_id")
+//    @JoinColumn(name = "legal_address_id", nullable = false)
 //    private Address legalAddress;
 //
 //    @OneToOne
 //    @ManyToOne
-//    @JoinColumn(name = "operational_address_id")
+//    @JoinColumn(name = "operational_address_id", nullable = false)
 //    private Address operationalAddress;
 
     public Customer(String companyName, String vatNumb, String email, LocalDate insertDate, LocalDate lastContactDate, double annualRevenue, String pec, String phoneNumb, String contactEmail, String contactFirstName, String contactLastName, String contactPhoneNumb, String companyLogo, ClientType clientType) {
