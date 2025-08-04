@@ -5,8 +5,8 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import zairastra.u5w3p.payloads.ErrorDTO;
-import zairastra.u5w3p.payloads.ErrorsWithListDTO;
+import team6.bw5_epic_energy_services.payloads.ErrorDTO;
+import team6.bw5_epic_energy_services.payloads.ErrorsWithListDTO;
 
 import java.time.LocalDateTime;
 
