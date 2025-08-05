@@ -15,6 +15,7 @@ public class Role {
     @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
+    @Column(name = "role_id", nullable = false)
     private UUID id;
     @Column(name = "name")
     private String name;

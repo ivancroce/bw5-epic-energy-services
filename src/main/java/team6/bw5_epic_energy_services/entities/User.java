@@ -17,6 +17,7 @@ public class User {
     @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
+    @Column(name = "user_id", nullable = false)
     private UUID id;
     @Column(name = "username")
     private String username;
