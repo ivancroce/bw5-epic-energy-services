@@ -5,12 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import team6.bw5_epic_energy_services.entities.Customer;
-import team6.bw5_epic_energy_services.entities.User;
 import team6.bw5_epic_energy_services.exceptions.ValidationException;
 import team6.bw5_epic_energy_services.payloads.NewCustomerDTO;
 import team6.bw5_epic_energy_services.services.CustomerService;
@@ -29,7 +27,8 @@ public class CustomerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Customer createCustomer(@RequestBody @Validated NewCustomerDTO payload, BindingResult validationResult, @AuthenticationPrincipal User authenticatedUser) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public Customer createCustomer(@RequestBody @Validated NewCustomerDTO payload, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
             List<String> errors = validationResult.getFieldErrors().stream()
                     .map(fieldError -> fieldError.getDefaultMessage())
