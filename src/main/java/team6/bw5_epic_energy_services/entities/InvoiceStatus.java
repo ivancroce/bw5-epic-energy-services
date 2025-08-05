@@ -14,7 +14,7 @@ import java.util.UUID;
 public class InvoiceStatus {
     @Id
     @GeneratedValue
-    @Column(name = "invoice_id", nullable = false)
+    @Column(name = "invoices_status_id", nullable = false)
     @Setter(AccessLevel.NONE)
     private UUID id;
     @Column(name = "status_name")
