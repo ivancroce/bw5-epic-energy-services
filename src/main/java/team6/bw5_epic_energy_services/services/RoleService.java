@@ -32,7 +32,7 @@ public class RoleService {
     }
 
     public Role findById(UUID id) {
-        return roleRepository.findById(id).orElseThrow(() -> new NotFoundException("Ruolo con id " + id + " non trovato!"));
+        return roleRepository.findById(id).orElseThrow(() -> new NotFoundException("Role with id " + id + " not found!"));
     }
 
     public Role findByName(String name) {
@@ -57,5 +57,5 @@ public class RoleService {
         Role found = this.findById(id);
         roleRepository.delete(found);
     }
-    
+
 }
