@@ -49,13 +49,11 @@ public class Customer {
     @Column(name = "client_type")
     private ClientType clientType;
 
-    @OneToOne
-    //@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "legal_address_id", nullable = false)
     private Address legalAddress;
-
-    @OneToOne
-    //@ManyToOne
+    
+    @ManyToOne
     @JoinColumn(name = "operational_address_id", nullable = false)
     private Address operationalAddress;
 
