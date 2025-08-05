@@ -47,9 +47,10 @@ public class UserService {
         User newUser = new User(
                 body.username(),
                 body.email(),
-                //body.password()),
+                //passwordEncoder.encode()
+                body.password(),
                 body.name(),
-                body.surname(),
+                body.surname()
                 //"https://avatars.com/" + body.name() + "+" + body.surname()
         );
 
