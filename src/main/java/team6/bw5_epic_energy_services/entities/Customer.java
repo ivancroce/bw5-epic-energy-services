@@ -49,17 +49,17 @@ public class Customer {
     @Column(name = "client_type")
     private ClientType clientType;
 
-//    @OneToOne
-//    @ManyToOne
-//    @JoinColumn(name = "legal_address_id", nullable = false)
-//    private Address legalAddress;
-//
-//    @OneToOne
-//    @ManyToOne
-//    @JoinColumn(name = "operational_address_id", nullable = false)
-//    private Address operationalAddress;
+    @OneToOne
+    //@ManyToOne
+    @JoinColumn(name = "legal_address_id", nullable = false)
+    private Address legalAddress;
 
-    public Customer(String companyName, String vatNumb, String email, LocalDate insertDate, LocalDate lastContactDate, double annualRevenue, String pec, String phoneNumb, String contactEmail, String contactFirstName, String contactLastName, String contactPhoneNumb, String companyLogo, ClientType clientType) {
+    @OneToOne
+    //@ManyToOne
+    @JoinColumn(name = "operational_address_id", nullable = false)
+    private Address operationalAddress;
+
+    public Customer(String companyName, String vatNumb, String email, LocalDate insertDate, LocalDate lastContactDate, Double annualRevenue, String pec, String phoneNumb, String contactEmail, String contactFirstName, String contactLastName, String contactPhoneNumb, String companyLogo, ClientType clientType, Address legalAddress, Address operationalAddress) {
         this.companyName = companyName;
         this.vatNumb = vatNumb;
         this.email = email;
@@ -74,7 +74,7 @@ public class Customer {
         this.contactPhoneNumb = contactPhoneNumb;
         this.companyLogo = companyLogo;
         this.clientType = clientType;
-//        this.legalAddress = legalAddress;
-//        this.operationalAddress = operationalAddress;
+        this.legalAddress = legalAddress;
+        this.operationalAddress = operationalAddress;
     }
 }

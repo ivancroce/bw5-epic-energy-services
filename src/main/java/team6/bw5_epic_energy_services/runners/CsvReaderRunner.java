@@ -17,9 +17,9 @@ public class CsvReaderRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // this.importMunicipalities();
-
-        // this.importProvince();
+//        this.importMunicipalities();
+//
+//        this.importProvince();
     }
 
     public void importMunicipalities() {
