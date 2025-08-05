@@ -18,5 +18,13 @@ public interface InvoicesRepository extends JpaRepository<Invoice, UUID> {
 
     Page<Invoice> findByDate(LocalDate date, Pageable pageable);
 
+    Page<Invoice> findByDateBefore(LocalDate date, Pageable pageable);
+
+    Page<Invoice> findByDateAfter(LocalDate date, Pageable pageable);
+
     Page<Invoice> findByAmount(Double amount, Pageable pageable);
+
+    Page<Invoice> findByAmountGreaterThan(Double amount, Pageable pageable);
+
+    Page<Invoice> findByAmountLessThan(Double amount, Pageable pageable);
 }
