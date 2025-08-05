@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import team6.bw5_epic_energy_services.entities.Municipality;
+import team6.bw5_epic_energy_services.entities.Province;
 import team6.bw5_epic_energy_services.exceptions.BadRequestException;
 import team6.bw5_epic_energy_services.payloads.NewMunicipalityDTO;
 import team6.bw5_epic_energy_services.repositories.MunicipalityRepository;
@@ -36,5 +37,24 @@ public class MunicipalityService {
         log.info("Il comune con id:  " + savedMunicipality.getId() + "è stato salvato con successo!");
 
         return savedMunicipality;
+    }
+
+    public void saveMunicipalityFromCsv(String rawName, String provinceCode, String progressiveMunicipalityCode, String provinceName, Province province) {
+
+        String cleanedName = cleanName(rawName);
+
+        if (!municipalityRepository.existsByNameAndProvince(cleanedName, province)) {
+            Municipality newMunicipality = new Municipality(cleanedName, provinceCode, progressiveMunicipalityCode, provinceName, province);
+            municipalityRepository.save(newMunicipality);
+        }
+    }
+
+    private String cleanName(String rawName) {
+        if (rawName == null) {
+            return null;
+        }
+        return rawName
+                .replace("-", " ")
+                .trim();
     }
 }
