@@ -26,7 +26,7 @@ public class Municipality {
     private String provinceName;
 
     @ManyToOne
-    @JoinColumn(name = "provice_id", nullable = false)
+    @JoinColumn(name = "province_id", nullable = false)
     private Province province;
 
     public Municipality(String name, String provinceCode, String progressiveMunicipalityCode, String provinceName, Province province) {

@@ -39,22 +39,11 @@ public class MunicipalityService {
         return savedMunicipality;
     }
 
-    public void saveMunicipalityFromCsv(String rawName, String provinceCode, String progressiveMunicipalityCode, String provinceName, Province province) {
-
-        String cleanedName = cleanName(rawName);
+    public void saveMunicipalityFromCsv(String cleanedName, String provinceCode, String progressiveMunicipalityCode, String provinceName, Province province) {
 
         if (!municipalityRepository.existsByNameAndProvince(cleanedName, province)) {
             Municipality newMunicipality = new Municipality(cleanedName, provinceCode, progressiveMunicipalityCode, provinceName, province);
             municipalityRepository.save(newMunicipality);
         }
-    }
-
-    private String cleanName(String rawName) {
-        if (rawName == null) {
-            return null;
-        }
-        return rawName
-                .replace("-", " ")
-                .trim();
     }
 }
