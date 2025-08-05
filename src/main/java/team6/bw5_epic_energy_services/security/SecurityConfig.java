@@ -20,10 +20,9 @@ public class SecurityConfig {
         httpSecurity.formLogin(formLogin -> formLogin.disable());
         httpSecurity.csrf(csrf -> csrf.disable());
         httpSecurity.sessionManagement((sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS)));
-        httpSecurity.authorizeHttpRequests((authorized -> authorized.requestMatchers("/**")
-                .permitAll()
+        httpSecurity.authorizeHttpRequests((authorized -> authorized
+                .requestMatchers("/authorized/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/users/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated()));
 
         return httpSecurity.build();
