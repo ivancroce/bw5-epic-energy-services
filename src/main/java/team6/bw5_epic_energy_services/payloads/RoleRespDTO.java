@@ -1,6 +1,6 @@
 package team6.bw5_epic_energy_services.payloads;
 
-import team6.bw5_epic_energy_services.entities.Role;
+import java.util.UUID;
 
-public record RoleRespDTO(Role roleId) {
+public record RoleRespDTO(UUID roleId) {
 }
