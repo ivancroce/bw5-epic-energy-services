@@ -18,6 +18,7 @@ import team6.bw5_epic_energy_services.repositories.RoleRepository;
 import team6.bw5_epic_energy_services.repositories.UserRepository;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -60,6 +61,30 @@ public class UserService {
         Role defaultRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new RuntimeException("The role 'USER' was not found in the database."));
         newUser.setRoleList(Collections.singletonList(defaultRole));
+
+        User savedUser = userRepository.save(newUser);
+        return new UserRespDTO(savedUser.getId());
+    }
+
+    public UserRespDTO saveAdmin(UserRegistrationDTO body) {
+        userRepository.findByEmail(body.email()).ifPresent(user -> {
+            throw new BadRequestException("The Email " + user.getEmail() + " it is already in use!");
+        });
+        userRepository.findByUsername(body.username()).ifPresent(user -> {
+            throw new BadRequestException("The username " + user.getUsername() + " it is already in use!");
+        });
+
+        User newUser = new User(
+                body.username(),
+                body.email(),
+                passwordEncoder.encode(body.password()),
+                body.name(),
+                body.surname()
+        );
+
+        Role adminRole = roleRepository.findByName("ADMIN")
+                .orElseThrow(() -> new RuntimeException("The role 'ADMIN' was not found in the database."));
+        newUser.setRoleList(List.of(adminRole));
 
         User savedUser = userRepository.save(newUser);
         return new UserRespDTO(savedUser.getId());

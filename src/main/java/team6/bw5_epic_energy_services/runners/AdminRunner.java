@@ -51,7 +51,7 @@ public class AdminRunner implements ApplicationRunner {
                         ud.surname()
                 );
 
-                userService.save(newUserDto);
+                userService.saveAdmin(newUserDto);
                 System.out.println("Creato utente: " + ud.username());
             } else {
                 System.out.println("Utente già esistente: " + ud.username());

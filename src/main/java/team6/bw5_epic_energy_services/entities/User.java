@@ -38,7 +38,7 @@ public class User implements UserDetails {
     private String surname;
     @Column(name = "avatar")
     private String avatar;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -54,6 +54,11 @@ public class User implements UserDetails {
         this.name = name;
         this.surname = surname;
         //this.avatar = avatar;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
     @Override
