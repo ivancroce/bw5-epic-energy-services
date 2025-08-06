@@ -9,8 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import team6.bw5_epic_energy_services.entities.Municipality;
 import team6.bw5_epic_energy_services.entities.Province;
-import team6.bw5_epic_energy_services.exceptions.BadRequestException;
-import team6.bw5_epic_energy_services.payloads.NewMunicipalityDTO;
 import team6.bw5_epic_energy_services.repositories.MunicipalityRepository;
 
 @Service
@@ -26,23 +24,11 @@ public class MunicipalityService {
         return this.municipalityRepository.findAll(pageable);
     }
 
-    //------------------------------SAVE-----------------------------------------------
-    public Municipality save(NewMunicipalityDTO payload) {
-        this.municipalityRepository.findByName(payload.name()).ifPresent(municipality -> {
-            throw new BadRequestException("Il nome " + municipality.getName() + "è già in uso!");
-        });
-        Municipality newMunicipality = new Municipality(payload.name(), payload.provinceCode(), payload.progressiveMunicipalityCode(), payload.provinceName(), payload.province());
-        Municipality savedMunicipality = this.municipalityRepository.save(newMunicipality);
 
-        log.info("Il comune con id:  " + savedMunicipality.getId() + "è stato salvato con successo!");
-
-        return savedMunicipality;
-    }
-
-    public void saveMunicipalityFromCsv(String name, String provinceCode, String progressiveMunicipalityCode, String provinceName, Province province) {
+    public void saveMunicipalityFromCsv(String name, String progressiveMunicipalityCode, Province province) {
 
         if (!municipalityRepository.existsByNameAndProvince(name, province)) {
-            Municipality newMunicipality = new Municipality(name, provinceCode, progressiveMunicipalityCode, provinceName, province);
+            Municipality newMunicipality = new Municipality(name, progressiveMunicipalityCode, province);
             municipalityRepository.save(newMunicipality);
         }
     }

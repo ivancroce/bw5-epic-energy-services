@@ -1,12 +1,10 @@
 package team6.bw5_epic_energy_services.services;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team6.bw5_epic_energy_services.entities.Province;
 import team6.bw5_epic_energy_services.exceptions.BadRequestException;
-import team6.bw5_epic_energy_services.payloads.NewProvinceDTO;
 import team6.bw5_epic_energy_services.repositories.ProvinceRepository;
 
 @Service
@@ -15,21 +13,12 @@ public class ProvinceService {
     @Autowired
     private ProvinceRepository provinceRepository;
 
-    public Province saveProvinceFromPayload(NewProvinceDTO payload) {
-        if (provinceRepository.existsByName(payload.name())) {
-            throw new BadRequestException("Province with name " + payload.name() + " already exists.");
+
+    public Province saveProvinceFromCsv(Province province) {
+
+        if (provinceRepository.existsByCode(province.getCode())) {
+            throw new BadRequestException("Province with code '" + province.getCode() + "' already exists.");
         }
-        Province province = new Province(payload.code(), payload.name(), payload.region());
         return provinceRepository.save(province);
-    }
-
-    public Province saveProvinceFromCsv(String name, String code, String region) {
-
-        if (!provinceRepository.existsByName(name)) {
-            Province newProvince = new Province(name, code, region);
-            return provinceRepository.save(newProvince);
-        } else {
-            return provinceRepository.findByName(name).orElseThrow(() -> new BadRequestException("Error with data."));
-        }
     }
 }

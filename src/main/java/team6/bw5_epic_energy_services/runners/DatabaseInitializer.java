@@ -21,47 +21,47 @@ import java.util.Map;
 
 @Component
 public class DatabaseInitializer implements CommandLineRunner {
+
+    private static final Map<String, String> nameTranslationMap = new HashMap<>();
+
+    static {
+        nameTranslationMap.put("Verbano Cusio Ossola", "Verbania");
+        nameTranslationMap.put("Valle d'Aosta/Vallée d'Aoste", "Aosta");
+        nameTranslationMap.put("Reggio nell'Emilia", "Reggio Emilia");
+        nameTranslationMap.put("Sud Sardegna", "Cagliari");
+        nameTranslationMap.put("Bolzano/Bozen", "Bolzano");
+        nameTranslationMap.put("Pesaro e Urbino", "Pesaro Urbino");
+        nameTranslationMap.put("Monza e della Brianza", "Monza Brianza");
+        nameTranslationMap.put("Forlì Cesena", "Forli Cesena");
+
+    }
+
+    private final Map<String, Province> createdProvincesMap = new HashMap<>();
     @Autowired
     private ProvinceRepository provinceRepository;
-
     @Autowired
     private ProvinceService provinceService;
-
     @Autowired
     private MunicipalityService municipalityService;
-
-    private Map<String, Province> provinceMap = new HashMap<>();
+    private Map<String, String[]> provinceDetailsMap = new HashMap<>();
 
     @Override
     public void run(String... args) throws Exception {
+        if (provinceRepository.count() > 0) {
+            return;
+        }
+        this.prepareProvinceDetails("/province-italiane.csv");
 
-        this.importProvinces("/province-italiane.csv");
-
-        this.importMunicipalities("/comuni-italiani.csv");
-
+        this.importDataFromMunicipalities("/comuni-italiani.csv");
+        
     }
 
     private String cleanAndNormalize(String name) {
         if (name == null) return "";
-        return name.replace("-", " ").split("/")[0].trim();
+        return name.replace("-", " ").trim();
     }
 
-    private String translateProvinceName(String cleanedName) {
-        return switch (cleanedName) {
-            case "Valle d'Aosta" -> "Aosta";
-            case "Bolzano" -> "Bolzano";
-            case "Verbano Cusio Ossola" -> "Verbania";
-            case "Reggio nell'Emilia" -> "Reggio Emilia";
-            case "Pesaro e Urbino" -> "Pesaro Urbino";
-            case "Monza e della Brianza" -> "Monza Brianza";
-            case "Forlì Cesena" -> "Forli Cesena";
-            // case "Sud Sardegna" -> "Sardegna";
-            default -> cleanedName;
-        };
-    }
-
-    private void importProvinces(String filePath) {
-        System.out.println("--- Import Provinces: " + filePath + " ---");
+    private void prepareProvinceDetails(String filePath) {
         try (
                 InputStream is = getClass().getResourceAsStream(filePath);
                 InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
@@ -69,24 +69,20 @@ public class DatabaseInitializer implements CommandLineRunner {
         ) {
             String[] record;
             while ((record = csvReader.readNext()) != null) {
-
                 String code = record[0].trim();
-                String name = record[1].trim();
+                String rawName = record[1].trim();
                 String region = record[2].trim();
 
-                String cleanedName = cleanAndNormalize(name);
+                String cleanedName = cleanAndNormalize(rawName);
 
-                Province savedProvince = provinceService.saveProvinceFromCsv(cleanedName, code, region);
-
-                provinceMap.put(cleanedName, savedProvince);
+                provinceDetailsMap.put(cleanedName, new String[]{code, region});
             }
         } catch (IOException | CsvException e) {
             e.printStackTrace();
         }
     }
 
-    private void importMunicipalities(String filePath) {
-        System.out.println("--- Import Municipalities: " + filePath + " ---");
+    private void importDataFromMunicipalities(String filePath) {
         try (
                 InputStream is = getClass().getResourceAsStream(filePath);
                 InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
@@ -94,33 +90,33 @@ public class DatabaseInitializer implements CommandLineRunner {
         ) {
             String[] record;
             while ((record = csvReader.readNext()) != null) {
+                String progressiveMunicipalityCode = record[1].trim();
+                String name = record[2].trim();
+                String officialProvinceName = record[3].trim();
 
-                String municipalityName = record[2];
-                String provinceName = record[3];
+                String officialKey = cleanAndNormalize(officialProvinceName);
+                Province province = createdProvincesMap.get(officialKey);
 
-                String cleanedMunicipalityName = cleanAndNormalize(municipalityName);
-                String cleanedProvinceName = cleanAndNormalize(provinceName);
-                String translatedProvinceName = translateProvinceName(cleanedProvinceName);
+                if (province == null) {
+                    String defaultName = nameTranslationMap.getOrDefault(officialKey, officialKey);
+                    String[] details = provinceDetailsMap.get(defaultName);
 
-                Province registeredProvince = provinceMap.get(translatedProvinceName);
+                    if (details == null) {
+                        System.out.println("Error: can't find the province: " + defaultName + "(from: " + officialProvinceName + ")");
+                        continue; // to go to the next municipality
+                    }
+                    String code = details[0];
+                    String region = details[1];
 
-                if (registeredProvince != null) {
-                    municipalityService.saveMunicipalityFromCsv(
-                            cleanedMunicipalityName,
-                            record[0].trim(),
-                            record[1].trim(),
-                            translatedProvinceName,
-                            registeredProvince
-                    );
-                } else {
-                    System.out.println("--- Province not found ---");
-                    System.out.println("Municipality: " + municipalityName);
-                    System.out.println("Province: '" + translatedProvinceName + "'");
-                    System.out.println("-----------------------------------------------------");
+                    province = new Province(officialProvinceName, code, region);
+                    provinceRepository.save(province);
+
+                    createdProvincesMap.put(officialKey, province);
                 }
 
+                municipalityService.saveMunicipalityFromCsv(name, progressiveMunicipalityCode, province);
             }
-        } catch (IOException | CsvException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
