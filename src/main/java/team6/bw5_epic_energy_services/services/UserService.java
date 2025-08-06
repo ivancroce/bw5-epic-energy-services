@@ -13,6 +13,7 @@ import team6.bw5_epic_energy_services.exceptions.BadRequestException;
 import team6.bw5_epic_energy_services.exceptions.NotFoundException;
 import team6.bw5_epic_energy_services.payloads.UserRegistrationDTO;
 import team6.bw5_epic_energy_services.payloads.UserRespDTO;
+import team6.bw5_epic_energy_services.payloads.UserUpdateDTO;
 import team6.bw5_epic_energy_services.repositories.RoleRepository;
 import team6.bw5_epic_energy_services.repositories.UserRepository;
 
@@ -67,6 +68,22 @@ public class UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User with email " + email + " not found!"));
+    }
+
+    public User findByIdAndUpdate(UUID userId, UserUpdateDTO body) {
+        User found = this.findById(userId);
+
+        found.setUsername(body.username());
+        found.setName(body.name());
+        found.setUsername(body.username());
+        found.setAvatar(body.avatar());
+
+        return userRepository.save(found);
+    }
+
+    public void findByIdAndDelete(UUID userId) {
+        User found = this.findById(userId);
+        userRepository.delete(found);
     }
 
 }
