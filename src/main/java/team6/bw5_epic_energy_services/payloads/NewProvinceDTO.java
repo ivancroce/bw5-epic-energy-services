@@ -4,14 +4,14 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record NewProvinceDTO(
-        @NotNull(message = "Il nome non può essere vuoto!")
-        @Size(min = 2, max = 50, message = "Il nome deve essere compreso tra 2 e 50 caratteri!")
+        @NotNull(message = "A province must have a name")
+        @Size(min = 2, max = 50, message = "The province name must be between 2 and 50 characters!")
         String name,
-        @NotNull(message = "Il codice non può essere vuoto!")
-        @Size(min = 2, max = 20, message = "Il codice deve essere compreso tra 2 e 20 caratteri!")
+        @NotNull(message = "A province must have a code!")
+        @Size(min = 2, max = 20, message = "The province code must be between 2 and 20 characters!")
         String code,
-        @NotNull(message = "La provincia non può essere vuota!")
-        @Size(min = 2, max = 40, message = "La regione deve essere compresa tra 2 e 40 caratteri!")
+        @NotNull(message = "A province must have a region")
+        @Size(min = 2, max = 40, message = "The region must be between 2 and 50 characters!")
         String region
 ) {
 }

@@ -5,20 +5,20 @@ import jakarta.validation.constraints.Size;
 import team6.bw5_epic_energy_services.entities.Municipality;
 
 public record NewAddressDTO(
-        @NotNull(message = "La via non può essere vuota!")
-        @Size(min = 2, max = 50, message = "La via deve essere compresa tra 2 e 50 caratteri!")
+        @NotNull(message = "Address must have a street")
+        @Size(min = 2, max = 50, message = "The street must be between 2 and 50 characters")
         String street,
-        @NotNull(message = "Il numero dell'edificio non può essere vuoto!")
-        @Size(min = 2, max = 20, message = "Il numero dell'edificio deve essere compreso tra 2 e 20 caratteri!")
+        @NotNull(message = "Address must have a building number")
+        @Size(min = 2, max = 20, message = "The building number must be between 2 and 20 characters!")
         String buildingNumber,
-        @NotNull(message = "La posizione non può essere vuota!")
-        @Size(min = 2, max = 50, message = "La posizione deve essere compresa tra 2 e 50 caratteri!")
+        @NotNull(message = "Address must have a location")
+        @Size(min = 2, max = 50, message = "The location must be between 2 and 20 characters!")
         String location,
-        @NotNull(message = "Il codice postale non può essere vuoto!")
-        @Size(min = 3, max = 10, message = "Il codice postale deve essere compreso tra 3 e 10 cifre!")
+        @NotNull(message = "Address must have a postal code")
+        @Size(min = 3, max = 10, message = "The postal code must be between 3 and 10 digits!")
         String postalCode,
-        @NotNull(message = "Il codice postale non può essere vuoto!")
-        @Size(min = 3, max = 10, message = "Il codice postale deve essere compreso tra 3 e 10 cifre!")
+        @NotNull(message = "Address must have a municipality")
+        @Size(min = 2, max = 20, message = "The municipality must be between 2 and 20 characters!")
         Municipality municipality
 ) {
 }
