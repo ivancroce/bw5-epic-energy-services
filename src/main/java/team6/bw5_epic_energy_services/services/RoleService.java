@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import team6.bw5_epic_energy_services.entities.Role;
 import team6.bw5_epic_energy_services.exceptions.BadRequestException;
 import team6.bw5_epic_energy_services.exceptions.NotFoundException;
@@ -13,6 +14,7 @@ import team6.bw5_epic_energy_services.repositories.RoleRepository;
 
 import java.util.UUID;
 
+@Service
 public class RoleService {
     @Autowired
     private RoleRepository roleRepository;
