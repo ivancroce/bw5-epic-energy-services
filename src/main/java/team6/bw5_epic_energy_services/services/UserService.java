@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team6.bw5_epic_energy_services.entities.Role;
 import team6.bw5_epic_energy_services.entities.User;
@@ -24,6 +25,8 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public Page<User> findAllUsers(int page, int size, String sortBy) {
         if (size > 50) size = 50;
@@ -47,8 +50,7 @@ public class UserService {
         User newUser = new User(
                 body.username(),
                 body.email(),
-                //passwordEncoder.encode()
-                body.password(),
+                passwordEncoder.encode(body.password()),
                 body.name(),
                 body.surname()
                 //"https://avatars.com/" + body.name() + "+" + body.surname()
