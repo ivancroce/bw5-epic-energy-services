@@ -12,6 +12,7 @@ import team6.bw5_epic_energy_services.exceptions.NotFoundException;
 import team6.bw5_epic_energy_services.payloads.RoleDTO;
 import team6.bw5_epic_energy_services.repositories.RoleRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -37,9 +38,8 @@ public class RoleService {
         return roleRepository.findById(id).orElseThrow(() -> new NotFoundException("Role with id " + id + " not found!"));
     }
 
-    public Role findByName(String name) {
-        return roleRepository.findByName(name)
-                .orElseThrow(() -> new NotFoundException("Role with name " + name + " not found!"));
+    public Optional<Role> findByName(String name) {
+        return roleRepository.findByName(name);
     }
 
     public Role findByIdAndUpdate(UUID id, RoleDTO body) {
@@ -59,5 +59,6 @@ public class RoleService {
         Role found = this.findById(id);
         roleRepository.delete(found);
     }
+
 
 }
