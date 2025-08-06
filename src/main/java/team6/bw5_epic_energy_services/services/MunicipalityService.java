@@ -9,8 +9,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import team6.bw5_epic_energy_services.entities.Municipality;
 import team6.bw5_epic_energy_services.exceptions.BadRequestException;
+import team6.bw5_epic_energy_services.exceptions.NotFoundException;
 import team6.bw5_epic_energy_services.payloads.NewMunicipalityDTO;
 import team6.bw5_epic_energy_services.repositories.MunicipalityRepository;
+
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -25,15 +28,20 @@ public class MunicipalityService {
         return this.municipalityRepository.findAll(pageable);
     }
 
+    public Municipality findMunicipalityById(UUID municipalityId) {
+        return municipalityRepository.findById(municipalityId)
+                .orElseThrow(() -> new NotFoundException("MUnicipality not found"));
+    }
+
     //------------------------------SAVE-----------------------------------------------
     public Municipality save(NewMunicipalityDTO payload) {
         this.municipalityRepository.findByName(payload.name()).ifPresent(municipality -> {
-            throw new BadRequestException("Il nome " + municipality.getName() + "è già in uso!");
+            throw new BadRequestException("Municipality " + municipality.getName() + " already exists in our system");
         });
         Municipality newMunicipality = new Municipality(payload.name(), payload.provinceCode(), payload.progressiveMunicipalityCode(), payload.provinceName(), payload.province());
         Municipality savedMunicipality = this.municipalityRepository.save(newMunicipality);
 
-        log.info("Il comune con id:  " + savedMunicipality.getId() + "è stato salvato con successo!");
+        log.info("MUnicipality " + savedMunicipality.getName() + " has been successfully saved");
 
         return savedMunicipality;
     }
