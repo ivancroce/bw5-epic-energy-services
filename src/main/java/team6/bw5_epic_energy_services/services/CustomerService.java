@@ -23,7 +23,6 @@ public class CustomerService {
     @Autowired
     private CustomersRepository customersRepository;
 
-    //TODO: dovremmo verificare che sia un admin a salvare, modificare e eliminare i Customers
 
     public Customer saveCustomer(NewCustomerDTO payload) {
 
@@ -121,7 +120,7 @@ public class CustomerService {
         log.info("Customer " + c.getCompanyName() + " with VAT " + c.getVatNumb() + " has been deleted");
     }
 
-    public Page<Customer> filterByCompanyName(String name, int page, int size, String sortBy, String direction) {
+    public Page<Customer> filterByPartialCompanyName(String name, int page, int size, String sortBy, String direction) {
         Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return customersRepository.findByCompanyNameContainingIgnoreCase(name, pageable);
@@ -131,6 +130,12 @@ public class CustomerService {
         Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return customersRepository.findByAnnualRevenue(revenue, pageable);
+    }
+
+    public Page<Customer> filterByInsertDate(LocalDate date, int page, int size, String sortBy, String direction) {
+        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return customersRepository.findByInsertDate(date, pageable);
     }
 
     public Page<Customer> filterByLastContactDate(LocalDate date, int page, int size, String sortBy, String direction) {

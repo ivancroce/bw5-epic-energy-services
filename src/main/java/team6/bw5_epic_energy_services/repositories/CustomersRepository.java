@@ -22,6 +22,8 @@ public interface CustomersRepository extends JpaRepository<Customer, UUID> {
 
     Page<Customer> findByLastContactDate(LocalDate date, Pageable pageable);
 
+    Page<Customer> findByInsertDate(LocalDate date, Pageable pageable);
+
     Page<Customer> findByAnnualRevenue(Double annualRevenue, Pageable pageable);
 
     Page<Customer> findByLegalAddress_Municipality_Province_NameIgnoreCase(String provinceName, Pageable pageable);

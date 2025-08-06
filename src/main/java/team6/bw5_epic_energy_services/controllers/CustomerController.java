@@ -71,8 +71,8 @@ public class CustomerController {
     }
 
     @GetMapping("/search/name")
-    public Page<Customer> filterByCompanyName(@RequestParam String name, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
-        return customerService.filterByCompanyName(name, page, size, sortBy, direction);
+    public Page<Customer> filterByPartialCompanyName(@RequestParam String name, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
+        return customerService.filterByPartialCompanyName(name, page, size, sortBy, direction);
     }
 
     @GetMapping("/search/revenue")
@@ -83,6 +83,11 @@ public class CustomerController {
     @GetMapping("/search/date")
     public Page<Customer> filterByLastContactDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
         return customerService.filterByLastContactDate(date, page, size, sortBy, direction);
+    }
+
+    @GetMapping("/search/date")
+    public Page<Customer> filterByInsertDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
+        return customerService.filterByInsertDate(date, page, size, sortBy, direction);
     }
 
     @GetMapping("/search/province")
