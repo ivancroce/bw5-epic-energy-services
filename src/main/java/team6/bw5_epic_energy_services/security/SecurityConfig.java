@@ -22,7 +22,7 @@ public class SecurityConfig {
         httpSecurity.sessionManagement((sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS)));
         httpSecurity.authorizeHttpRequests((authorized -> authorized
                 .requestMatchers("/authorized/**").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()));
 
         return httpSecurity.build();

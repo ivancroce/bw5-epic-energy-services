@@ -22,7 +22,7 @@ public class InvoiceStatusController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public InvoiceStatus createInvoiceStatus(@RequestBody @Validated NewInvoiceStatusDTO payload, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
             List<String> errors = validationResult.getFieldErrors().stream()

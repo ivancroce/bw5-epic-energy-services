@@ -27,7 +27,7 @@ public class CustomerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Customer createCustomer(@RequestBody @Validated NewCustomerDTO payload, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
             List<String> errors = validationResult.getFieldErrors().stream()
@@ -51,7 +51,7 @@ public class CustomerController {
     }
 
     @PutMapping("/{customerId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Customer updateCustomer(@PathVariable UUID customerId, @RequestBody @Validated NewCustomerDTO payload, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
             List<String> errors = validationResult.getFieldErrors().stream()
@@ -65,7 +65,7 @@ public class CustomerController {
 
     @DeleteMapping("/{customerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteCustomer(@PathVariable UUID customerId) {
         customerService.deleteCustomer(customerId);
     }
