@@ -80,12 +80,12 @@ public class CustomerController {
         return customerService.filterByAnnualRevenue(revenue, page, size, sortBy, direction);
     }
 
-    @GetMapping("/search/date")
+    @GetMapping("/search/date-last-contact")
     public Page<Customer> filterByLastContactDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
         return customerService.filterByLastContactDate(date, page, size, sortBy, direction);
     }
 
-    @GetMapping("/search/date")
+    @GetMapping("/search/date-insert")
     public Page<Customer> filterByInsertDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
         return customerService.filterByInsertDate(date, page, size, sortBy, direction);
     }
