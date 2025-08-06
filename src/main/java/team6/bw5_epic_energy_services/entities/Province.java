@@ -20,7 +20,7 @@ public class Province {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, length = 2)
+    @Column(nullable = false)
     private String code;
 
     @Column(nullable = false)

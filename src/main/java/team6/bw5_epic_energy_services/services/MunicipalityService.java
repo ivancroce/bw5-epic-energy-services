@@ -11,6 +11,7 @@ import team6.bw5_epic_energy_services.entities.Municipality;
 import team6.bw5_epic_energy_services.exceptions.BadRequestException;
 import team6.bw5_epic_energy_services.exceptions.NotFoundException;
 import team6.bw5_epic_energy_services.payloads.NewMunicipalityDTO;
+import team6.bw5_epic_energy_services.entities.Province;
 import team6.bw5_epic_energy_services.repositories.MunicipalityRepository;
 
 import java.util.UUID;
@@ -38,11 +39,19 @@ public class MunicipalityService {
         this.municipalityRepository.findByName(payload.name()).ifPresent(municipality -> {
             throw new BadRequestException("Municipality " + municipality.getName() + " already exists in our system");
         });
-        Municipality newMunicipality = new Municipality(payload.name(), payload.provinceCode(), payload.progressiveMunicipalityCode(), payload.provinceName(), payload.province());
+        Municipality newMunicipality = new Municipality(payload.name(), payload.progressiveMunicipalityCode(), payload.province());
         Municipality savedMunicipality = this.municipalityRepository.save(newMunicipality);
 
         log.info("MUnicipality " + savedMunicipality.getName() + " has been successfully saved");
 
         return savedMunicipality;
+    }
+
+    public void saveMunicipalityFromCsv(String name, String progressiveMunicipalityCode, Province province) {
+
+        if (!municipalityRepository.existsByNameAndProvince(name, province)) {
+            Municipality newMunicipality = new Municipality(name, progressiveMunicipalityCode, province);
+            municipalityRepository.save(newMunicipality);
+        }
     }
 }
