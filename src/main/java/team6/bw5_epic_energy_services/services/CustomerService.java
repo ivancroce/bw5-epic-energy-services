@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import team6.bw5_epic_energy_services.entities.Address;
 import team6.bw5_epic_energy_services.entities.Customer;
@@ -120,34 +121,75 @@ public class CustomerService {
         log.info("Customer " + c.getCompanyName() + " with VAT " + c.getVatNumb() + " has been deleted");
     }
 
-    public Page<Customer> filterByPartialCompanyName(String name, int page, int size, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return customersRepository.findByCompanyNameContainingIgnoreCase(name, pageable);
-    }
+//    public Page<Customer> filterByPartialCompanyName(String name, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return customersRepository.findByCompanyNameContainingIgnoreCase(name, pageable);
+//    }
+//
+//    public Page<Customer> filterByAnnualRevenue(Double revenue, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return customersRepository.findByAnnualRevenue(revenue, pageable);
+//    }
+//
+//    public Page<Customer> filterByInsertDate(LocalDate date, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return customersRepository.findByInsertDate(date, pageable);
+//    }
+//
+//    public Page<Customer> filterByLastContactDate(LocalDate date, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return customersRepository.findByLastContactDate(date, pageable);
+//    }
+//
+//    public Page<Customer> filterByProvinceName(String provinceName, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return customersRepository.findByLegalAddress_Municipality_Province_NameIgnoreCase(provinceName, pageable);
+//    }
 
-    public Page<Customer> filterByAnnualRevenue(Double revenue, int page, int size, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return customersRepository.findByAnnualRevenue(revenue, pageable);
-    }
+    public Page<Customer> searchCustomers(String name,
+                                          Double revenue,
+                                          LocalDate insertDate,
+                                          LocalDate lastContactDate,
+                                          int page,
+                                          int size,
+                                          String sortBy,
+                                          String direction) {
+        //Specification, Interfaccia si Spring Data Jpa che rappresenta una condizione o un filtro da applicare a una query
+        //ci permette quindi di costruire query dinamiche/componibili
 
-    public Page<Customer> filterByInsertDate(LocalDate date, int page, int size, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return customersRepository.findByInsertDate(date, pageable);
-    }
+        //nome parziale
+        Specification<Customer> nameSpec = (root, query, builder) ->
+                name == null ? null : builder.like(builder.lower(root.get("companyName")), "%" + name.toLowerCase() + "%");
 
-    public Page<Customer> filterByLastContactDate(LocalDate date, int page, int size, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return customersRepository.findByLastContactDate(date, pageable);
-    }
+        //fatturato annnuo - in questo modo filtra esattamente per l'importo (nel evcchio metodo io cercavo per valori superiori o inferiori)
+        Specification<Customer> revenueSpec = (root, query, builder) ->
+                revenue == null ? null : builder.equal(root.get("annualRevenue"), revenue);
 
-    public Page<Customer> filterByProvinceName(String provinceName, int page, int size, String sortBy, String direction) {
+        //data inserimento - in questo modo filtra esattamente per la data (nel evcchio metodo io cercavo per valori superiori o inferiori)
+        Specification<Customer> insertDateSpec = (root, query, builder) ->
+                insertDate == null ? null : builder.equal(root.get("insertDate"), insertDate);
+
+        //data ultimo contatto - in questo modo filtra esattamente per la data (nel evcchio metodo io cercavo per valori superiori o inferiori)
+        Specification<Customer> lastContactDateSpec = (root, query, builder) ->
+                lastContactDate == null ? null : builder.equal(root.get("lastContactDate"), lastContactDate);
+
+        Specification<Customer> specification = Specification.<Customer>unrestricted()
+                .and(nameSpec)
+                .and(revenueSpec)
+                .and(insertDateSpec)
+                .and(lastContactDateSpec);
+
         Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+
         Pageable pageable = PageRequest.of(page, size, sort);
-        return customersRepository.findByLegalAddress_Municipality_Province_NameIgnoreCase(provinceName, pageable);
+
+        // Esegui la query con Specification e paginazione
+        return customersRepository.findAll(specification, pageable);
     }
 
     //TODO: l'admin può inviare mail al cliente?

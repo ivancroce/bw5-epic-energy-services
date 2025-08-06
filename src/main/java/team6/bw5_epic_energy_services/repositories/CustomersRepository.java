@@ -3,6 +3,7 @@ package team6.bw5_epic_energy_services.repositories;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import team6.bw5_epic_energy_services.entities.Customer;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface CustomersRepository extends JpaRepository<Customer, UUID> {
+public interface CustomersRepository extends JpaRepository<Customer, UUID>, JpaSpecificationExecutor<Customer> {
     Optional<Customer> findByVatNumbIgnoreCase(String vatNumb);
 
     Optional<Customer> findByEmailIgnoreCase(String email);

@@ -70,28 +70,45 @@ public class CustomerController {
         customerService.deleteCustomer(customerId);
     }
 
-    @GetMapping("/search/name")
-    public Page<Customer> filterByPartialCompanyName(@RequestParam String name, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
-        return customerService.filterByPartialCompanyName(name, page, size, sortBy, direction);
+    @GetMapping("/search")
+    public Page<Customer> searchCustomers(
+            //specification ci permette di trattare i parametri come facoltativi e di fare query multifattoriali
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Double revenue,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate insertDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate lastContactDate,
+            //meglio avere i valori di default per evitare di far fallire le query
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "companyName") String sortBy,
+            @RequestParam(defaultValue = "ASC") String direction
+
+    ) {
+        return customerService.searchCustomers(name, revenue, insertDate, lastContactDate, page, size, sortBy, direction);
     }
 
-    @GetMapping("/search/revenue")
-    public Page<Customer> filterByAnnualRevenue(@RequestParam Double revenue, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
-        return customerService.filterByAnnualRevenue(revenue, page, size, sortBy, direction);
-    }
-
-    @GetMapping("/search/date-last-contact")
-    public Page<Customer> filterByLastContactDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
-        return customerService.filterByLastContactDate(date, page, size, sortBy, direction);
-    }
-
-    @GetMapping("/search/date-insert")
-    public Page<Customer> filterByInsertDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
-        return customerService.filterByInsertDate(date, page, size, sortBy, direction);
-    }
-
-    @GetMapping("/search/province")
-    public Page<Customer> filterByProvinceName(@RequestParam String province, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
-        return customerService.filterByProvinceName(province, page, size, sortBy, direction);
-    }
+//    @GetMapping("/search/name")
+//    public Page<Customer> filterByPartialCompanyName(@RequestParam String name, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
+//        return customerService.filterByPartialCompanyName(name, page, size, sortBy, direction);
+//    }
+//
+//    @GetMapping("/search/revenue")
+//    public Page<Customer> filterByAnnualRevenue(@RequestParam Double revenue, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
+//        return customerService.filterByAnnualRevenue(revenue, page, size, sortBy, direction);
+//    }
+//
+//    @GetMapping("/search/date-last-contact")
+//    public Page<Customer> filterByLastContactDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
+//        return customerService.filterByLastContactDate(date, page, size, sortBy, direction);
+//    }
+//
+//    @GetMapping("/search/date-insert")
+//    public Page<Customer> filterByInsertDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
+//        return customerService.filterByInsertDate(date, page, size, sortBy, direction);
+//    }
+//
+//    @GetMapping("/search/province")
+//    public Page<Customer> filterByProvinceName(@RequestParam String province, @RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String direction) {
+//        return customerService.filterByProvinceName(province, page, size, sortBy, direction);
+//    }
 }

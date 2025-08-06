@@ -76,68 +76,68 @@ public class InvoiceService {
         invoicesRepository.delete(invoice);
         log.info("Invoice with code " + invoice.getId() + " has been deleted");
     }
-
-    public Page<Invoice> filterByCustomer(UUID customerId, int page, int size, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return invoicesRepository.findByCustomer_Id(customerId, pageable);
-    }
-
-    public Page<Invoice> filterByStatus(UUID statusId, int page, int size, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return invoicesRepository.findByInvoiceStatusId_Id(statusId, pageable);
-    }
-
-
-    public Page<Invoice> filterByDate(LocalDate date, int page, int size, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return invoicesRepository.findByDate(date, pageable);
-    }
-
-    public Page<Invoice> filterByDateBefore(LocalDate date, int page, int size, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return invoicesRepository.findByDateBefore(date, pageable);
-    }
-
-    public Page<Invoice> filterByDateAfter(LocalDate date, int page, int size, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return invoicesRepository.findByDateAfter(date, pageable);
-    }
-
-
-    public Page<Invoice> filterByAmount(Double amount, int page, int size, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return invoicesRepository.findByAmount(amount, pageable);
-    }
-
-    public Page<Invoice> filterByAmountGreaterThan(Double amount, int page, int size, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return invoicesRepository.findByAmountGreaterThan(amount, pageable);
-    }
-
-    public Page<Invoice> filterByAmountLessThan(Double amount, int page, int size, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return invoicesRepository.findByAmountLessThan(amount, pageable);
-    }
-
-    public Page<Invoice> findByDateYear(int year, int page, int size, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return invoicesRepository.findByDateYear(year, pageable);
-    }
-
-    public Page<Invoice> findByAmountBetween(Double min, Double max, int page, int size, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return invoicesRepository.findByAmountBetween(min, max, pageable);
-    }
+//
+//    public Page<Invoice> filterByCustomer(UUID customerId, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return invoicesRepository.findByCustomer_Id(customerId, pageable);
+//    }
+//
+//    public Page<Invoice> filterByStatus(UUID statusId, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return invoicesRepository.findByInvoiceStatusId_Id(statusId, pageable);
+//    }
+//
+//
+//    public Page<Invoice> filterByDate(LocalDate date, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return invoicesRepository.findByDate(date, pageable);
+//    }
+//
+//    public Page<Invoice> filterByDateBefore(LocalDate date, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return invoicesRepository.findByDateBefore(date, pageable);
+//    }
+//
+//    public Page<Invoice> filterByDateAfter(LocalDate date, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return invoicesRepository.findByDateAfter(date, pageable);
+//    }
+//
+//
+//    public Page<Invoice> filterByAmount(Double amount, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return invoicesRepository.findByAmount(amount, pageable);
+//    }
+//
+//    public Page<Invoice> filterByAmountGreaterThan(Double amount, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return invoicesRepository.findByAmountGreaterThan(amount, pageable);
+//    }
+//
+//    public Page<Invoice> filterByAmountLessThan(Double amount, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return invoicesRepository.findByAmountLessThan(amount, pageable);
+//    }
+//
+//    public Page<Invoice> findByDateYear(int year, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return invoicesRepository.findByDateYear(year, pageable);
+//    }
+//
+//    public Page<Invoice> findByAmountBetween(Double min, Double max, int page, int size, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        return invoicesRepository.findByAmountBetween(min, max, pageable);
+//    }
 
     public Page<Invoice> searchInvoices(UUID customerId, UUID statusId, LocalDate date, Integer year, Double min, Double max, int page, int size, String sortBy, String direction) {
         //Specification, Interfaccia si Spring Data Jpa che rappresenta una condizione o un filtro da applicare a una query
