@@ -48,13 +48,14 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     private String translateProvinceName(String cleanedName) {
         return switch (cleanedName) {
-            case "verbano cusio ossola" -> "verbania";
-            case "valle d'aosta" -> "aosta";
-            case "bolzano" -> "bolzano";
-            case "reggio nell'emilia" -> "reggio emilia";
-            case "sud sardegna" -> "sardegna";
-            case "pesaro e urbino" -> "pesaro urbino";
-            case "monza e della brianza" -> "monza brianza";
+            case "Valle d'Aosta" -> "Aosta";
+            case "Bolzano" -> "Bolzano";
+            case "Verbano Cusio Ossola" -> "Verbania";
+            case "Reggio nell'Emilia" -> "Reggio Emilia";
+            case "Pesaro e Urbino" -> "Pesaro Urbino";
+            case "Monza e della Brianza" -> "Monza Brianza";
+            case "Forlì Cesena" -> "Forli Cesena";
+            // case "Sud Sardegna" -> "Sardegna";
             default -> cleanedName;
         };
     }
@@ -68,11 +69,14 @@ public class DatabaseInitializer implements CommandLineRunner {
         ) {
             String[] record;
             while ((record = csvReader.readNext()) != null) {
-                String nameFromCsv = record[1].trim();
 
-                String cleanedName = cleanAndNormalize(nameFromCsv);
+                String code = record[0].trim();
+                String name = record[1].trim();
+                String region = record[2].trim();
 
-                Province savedProvince = provinceService.saveProvinceFromCsv(cleanedName, record[0].trim(), record[2].trim());
+                String cleanedName = cleanAndNormalize(name);
+
+                Province savedProvince = provinceService.saveProvinceFromCsv(cleanedName, code, region);
 
                 provinceMap.put(cleanedName, savedProvince);
             }
@@ -90,29 +94,28 @@ public class DatabaseInitializer implements CommandLineRunner {
         ) {
             String[] record;
             while ((record = csvReader.readNext()) != null) {
-                String municipalityName = record[2].trim();
-                String provinceName = record[3].trim();
 
+                String municipalityName = record[2];
+                String provinceName = record[3];
 
+                String cleanedMunicipalityName = cleanAndNormalize(municipalityName);
                 String cleanedProvinceName = cleanAndNormalize(provinceName);
-                String finalKeyForMap = translateProvinceName(cleanedProvinceName);
-                Province registeredProvince = provinceMap.get(finalKeyForMap);
+                String translatedProvinceName = translateProvinceName(cleanedProvinceName);
+
+                Province registeredProvince = provinceMap.get(translatedProvinceName);
 
                 if (registeredProvince != null) {
-
-                    String cleanedMunicipalityName = municipalityName.replace("-", " ").trim();
-
                     municipalityService.saveMunicipalityFromCsv(
                             cleanedMunicipalityName,
                             record[0].trim(),
                             record[1].trim(),
-                            provinceName,
+                            translatedProvinceName,
                             registeredProvince
                     );
                 } else {
                     System.out.println("--- Province not found ---");
                     System.out.println("Municipality: " + municipalityName);
-                    System.out.println("Final key for map: '" + finalKeyForMap + "'");
+                    System.out.println("Province: '" + translatedProvinceName + "'");
                     System.out.println("-----------------------------------------------------");
                 }
 

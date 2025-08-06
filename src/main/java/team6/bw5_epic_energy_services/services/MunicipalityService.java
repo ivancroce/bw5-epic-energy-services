@@ -39,10 +39,10 @@ public class MunicipalityService {
         return savedMunicipality;
     }
 
-    public void saveMunicipalityFromCsv(String cleanedName, String provinceCode, String progressiveMunicipalityCode, String provinceName, Province province) {
+    public void saveMunicipalityFromCsv(String name, String provinceCode, String progressiveMunicipalityCode, String provinceName, Province province) {
 
-        if (!municipalityRepository.existsByNameAndProvince(cleanedName, province)) {
-            Municipality newMunicipality = new Municipality(cleanedName, provinceCode, progressiveMunicipalityCode, provinceName, province);
+        if (!municipalityRepository.existsByNameAndProvince(name, province)) {
+            Municipality newMunicipality = new Municipality(name, provinceCode, progressiveMunicipalityCode, provinceName, province);
             municipalityRepository.save(newMunicipality);
         }
     }

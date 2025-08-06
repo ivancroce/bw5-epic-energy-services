@@ -23,13 +23,13 @@ public class ProvinceService {
         return provinceRepository.save(province);
     }
 
-    public Province saveProvinceFromCsv(String cleanedName, String code, String region) {
+    public Province saveProvinceFromCsv(String name, String code, String region) {
 
-        if (!provinceRepository.existsByName(cleanedName)) {
-            Province newProvince = new Province(cleanedName, code, region);
+        if (!provinceRepository.existsByName(name)) {
+            Province newProvince = new Province(name, code, region);
             return provinceRepository.save(newProvince);
         } else {
-            return provinceRepository.findByName(cleanedName).orElseThrow(() -> new BadRequestException("Error with data."));
+            return provinceRepository.findByName(name).orElseThrow(() -> new BadRequestException("Error with data."));
         }
     }
 }
