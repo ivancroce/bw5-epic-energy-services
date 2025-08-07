@@ -180,6 +180,8 @@ public class CustomerService {
 
     public Page<Customer> searchCustomers(String name,
                                           Double revenue,
+                                          Double min,
+                                          Double max,
                                           LocalDate insertDate,
                                           LocalDate lastContactDate,
                                           int page,
@@ -194,8 +196,20 @@ public class CustomerService {
                 name == null ? null : builder.like(builder.lower(root.get("companyName")), "%" + name.toLowerCase() + "%");
 
         //fatturato annnuo - in questo modo filtra esattamente per l'importo (nel evcchio metodo io cercavo per valori superiori o inferiori)
-        Specification<Customer> revenueSpec = (root, query, builder) ->
+        Specification<Customer> exRevenueSpec = (root, query, builder) ->
                 revenue == null ? null : builder.equal(root.get("annualRevenue"), revenue);
+
+        Specification<Customer> revenueSpec = (root, query, builder) -> {
+            if (min == null && max == null) {
+                return null;
+            } else if (min != null && max != null) {
+                return builder.between(root.get("annualRevenue"), min, max);
+            } else if (min != null) {
+                return builder.greaterThanOrEqualTo(root.get("annualRevenue"), min);
+            } else { // maxRevenue != null
+                return builder.lessThanOrEqualTo(root.get("annualRevenue"), max);
+            }
+        };
 
         //data inserimento - in questo modo filtra esattamente per la data (nel evcchio metodo io cercavo per valori superiori o inferiori)
         Specification<Customer> insertDateSpec = (root, query, builder) ->

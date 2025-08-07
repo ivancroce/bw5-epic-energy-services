@@ -1,5 +1,6 @@
 package team6.bw5_epic_energy_services.services;
 
+import jakarta.persistence.criteria.Expression;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -160,8 +161,14 @@ public class InvoiceService {
             if (year == null) {
                 return null;
             }
-            // Usa la funzione SQL YEAR() per estrarre l'anno dalla data
-            return builder.equal(builder.function("YEAR", Integer.class, root.get("date")), year);
+            Expression<Integer> yearExpression = builder.function(
+                    "date_part",
+                    Integer.class,
+                    builder.literal("year"),
+                    root.get("date")
+            );
+
+            return builder.equal(yearExpression, year);
         };
 
         // Specification per range di importi

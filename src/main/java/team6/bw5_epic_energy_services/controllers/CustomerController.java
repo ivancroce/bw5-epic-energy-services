@@ -77,6 +77,8 @@ public class CustomerController {
             //specification ci permette di trattare i parametri come facoltativi e di fare query multifattoriali
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Double revenue,
+            @RequestParam(required = false) Double min,
+            @RequestParam(required = false) Double max,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate insertDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate lastContactDate,
             //meglio avere i valori di default per evitare di far fallire le query
@@ -86,7 +88,7 @@ public class CustomerController {
             @RequestParam(defaultValue = "ASC") String direction
 
     ) {
-        return customerService.searchCustomers(name, revenue, insertDate, lastContactDate, page, size, sortBy, direction);
+        return customerService.searchCustomers(name, revenue, min, max, insertDate, lastContactDate, page, size, sortBy, direction);
     }
 
 //    @GetMapping("/search/name")
