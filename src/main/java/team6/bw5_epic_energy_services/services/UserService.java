@@ -111,6 +111,15 @@ public class UserService {
         userRepository.delete(found);
     }
 
+    public void addRoleToUser(UUID userId, String roleName) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Role role = roleRepository.findByName(roleName)
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+        user.getRoleList().add(role);
+        userRepository.save(user);
+    }
+
     public User tryFindByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }

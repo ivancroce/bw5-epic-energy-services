@@ -53,7 +53,7 @@ public class User implements UserDetails {
         this.password = password;
         this.name = name;
         this.surname = surname;
-        //this.avatar = avatar;
+        this.avatar = "https://ui-avatars.com/api/?name=" + name + "+" + surname;
     }
 
     @Override

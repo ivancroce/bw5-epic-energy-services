@@ -41,8 +41,10 @@ public class CustomerController {
 
 
     @GetMapping
-    public Page<Customer> getAllCustomers(@RequestParam int page, @RequestParam int size) {
-        return customerService.findAllCustomers(page, size);
+    public Page<Customer> getAllCustomers(@RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "10") int size,
+                                          @RequestParam(defaultValue = "id") String sortBy) {
+        return customerService.findAllCustomers(page, size, sortBy);
     }
 
     @GetMapping("/{customerId}")

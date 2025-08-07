@@ -8,6 +8,7 @@ import team6.bw5_epic_energy_services.entities.Role;
 import team6.bw5_epic_energy_services.entities.User;
 import team6.bw5_epic_energy_services.payloads.RoleDTO;
 import team6.bw5_epic_energy_services.payloads.UserRegistrationDTO;
+import team6.bw5_epic_energy_services.payloads.UserRespDTO;
 import team6.bw5_epic_energy_services.services.RoleService;
 import team6.bw5_epic_energy_services.services.UserService;
 
@@ -43,15 +44,8 @@ public class AdminRunner implements ApplicationRunner {
         for (UserRegistrationDTO ud : usersToCreate) {
             User existingUser = userService.tryFindByEmail(ud.email());
             if (existingUser == null) {
-                UserRegistrationDTO newUserDto = new UserRegistrationDTO(
-                        ud.username(),
-                        ud.email(),
-                        ud.password(),
-                        ud.name(),
-                        ud.surname()
-                );
-
-                userService.saveAdmin(newUserDto);
+                UserRespDTO savedUserResp = userService.saveAdmin(ud);
+                
                 System.out.println("Creato utente: " + ud.username());
             } else {
                 System.out.println("Utente già esistente: " + ud.username());

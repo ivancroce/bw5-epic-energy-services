@@ -12,7 +12,7 @@ import team6.bw5_epic_energy_services.services.UserService;
 
 
 @RestController
-@RequestMapping("/authorized")
+@RequestMapping("/public")
 public class AuthorizationController {
     @Autowired
     public UserService userService;

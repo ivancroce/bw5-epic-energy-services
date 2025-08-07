@@ -74,9 +74,9 @@ public class CustomerService {
         return savedCustomer;
     }
 
-    public Page<Customer> findAllCustomers(int pageNumb, int pageSize) {
+    public Page<Customer> findAllCustomers(int pageNumb, int pageSize, String sortBy) {
         if (pageSize > 50) pageSize = 50;
-        Pageable pageable = PageRequest.of(pageNumb, pageSize);
+        Pageable pageable = PageRequest.of(pageNumb, pageSize, Sort.by(sortBy).descending());
         return customersRepository.findAll(pageable);
     }
 
