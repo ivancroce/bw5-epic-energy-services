@@ -10,6 +10,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import team6.bw5_epic_energy_services.entities.User;
 import team6.bw5_epic_energy_services.exceptions.ValidationException;
+import team6.bw5_epic_energy_services.payloads.UserRegistrationDTO;
+import team6.bw5_epic_energy_services.payloads.UserRespDTO;
 import team6.bw5_epic_energy_services.payloads.UserUpdateDTO;
 import team6.bw5_epic_energy_services.services.UserService;
 
@@ -38,6 +40,19 @@ public class UserController {
     @GetMapping("/me")
     public User getMyProfile(@AuthenticationPrincipal User currentUser) {
         return currentUser;
+    }
+
+    @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserRespDTO createNewUser(@RequestBody @Validated UserRegistrationDTO body, BindingResult validationResult) {
+        if (validationResult.hasErrors()) {
+            List<String> errors = validationResult.getAllErrors().stream()
+                    .map(objectError -> objectError.getDefaultMessage())
+                    .toList();
+            throw new ValidationException(errors);
+        }
+        return userService.save(body);
     }
 
     @PutMapping("/{userId}")
