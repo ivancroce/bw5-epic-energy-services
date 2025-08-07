@@ -12,6 +12,7 @@ import team6.bw5_epic_energy_services.entities.Customer;
 import team6.bw5_epic_energy_services.exceptions.ValidationException;
 import team6.bw5_epic_energy_services.payloads.NewCustomerDTO;
 import team6.bw5_epic_energy_services.services.CustomerService;
+import team6.bw5_epic_energy_services.tools.MailgunSender;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +24,9 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private MailgunSender mailgunSender;
 
 
     @PostMapping
@@ -89,6 +93,18 @@ public class CustomerController {
 
     ) {
         return customerService.searchCustomers(name, revenue, min, max, insertDate, lastContactDate, page, size, sortBy, direction);
+    }
+
+    @PostMapping("/{customerId}/send-contact-email")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    public String sendDefaultEmailToCustomer(@PathVariable UUID customerId) {
+
+        Customer customer = customerService.findCustomerById(customerId);
+
+        mailgunSender.sendContactEmail(customer);
+
+        return "Email was sent to " + customer.getContactEmail();
     }
 
 //    @GetMapping("/search/name")
