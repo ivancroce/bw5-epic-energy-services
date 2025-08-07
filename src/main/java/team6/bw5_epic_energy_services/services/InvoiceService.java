@@ -42,9 +42,9 @@ public class InvoiceService {
         return savedInvoice;
     }
 
-    public Page<Invoice> findAllInvoices(int pageNumb, int pageSize) {
+    public Page<Invoice> findAllInvoices(int pageNumb, int pageSize, String sortBy) {
         if (pageSize > 50) pageSize = 50;
-        Pageable pageable = PageRequest.of(pageNumb, pageSize);
+        Pageable pageable = PageRequest.of(pageNumb, pageSize, Sort.by(sortBy).descending());
         return invoicesRepository.findAll(pageable);
     }
 
