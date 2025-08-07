@@ -43,19 +43,7 @@ public class UserController {
         return currentUser;
     }
 
-    @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserRespDTO createNewUser(@RequestBody @Validated UserRegistrationDTO body, BindingResult validationResult) {
-        if (validationResult.hasErrors()) {
-            List<String> errors = validationResult.getAllErrors().stream()
-                    .map(objectError -> objectError.getDefaultMessage())
-                    .toList();
-            throw new ValidationException(errors);
-        }
-        return userService.save(body);
-    }
-
+ 
     @PutMapping("/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public User findByIdAndUpdate(@PathVariable UUID userId, @RequestBody @Validated UserUpdateDTO body, BindingResult validationResult) {
