@@ -42,10 +42,10 @@ public class UserService {
 
     public UserRespDTO save(UserRegistrationDTO body) {
         userRepository.findByEmail(body.email()).ifPresent(user -> {
-            throw new BadRequestException("The Email " + user.getEmail() + " it is already in use!");
+            throw new BadRequestException("The Email " + user.getEmail() + " is already in use!");
         });
         userRepository.findByUsername(body.username()).ifPresent(user -> {
-            throw new BadRequestException("The username " + user.getUsername() + " it is already in use!");
+            throw new BadRequestException("The username " + body.username() + " is already in use!");
         });
 
         //CREAZIONE USER
@@ -68,10 +68,10 @@ public class UserService {
 
     public UserRespDTO saveAdmin(UserRegistrationDTO body) {
         userRepository.findByEmail(body.email()).ifPresent(user -> {
-            throw new BadRequestException("The Email " + user.getEmail() + " it is already in use!");
+            throw new BadRequestException("The Email " + user.getEmail() + " is already in use!");
         });
         userRepository.findByUsername(body.username()).ifPresent(user -> {
-            throw new BadRequestException("The username " + user.getUsername() + " it is already in use!");
+            throw new BadRequestException("The username " + user.getUsername() + " is already in use!");
         });
 
         User newUser = new User(
