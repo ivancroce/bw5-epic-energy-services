@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/invoces")
+@RequestMapping("/invoices")
 public class InvoiceController {
     @Autowired
     private InvoiceService invoicesService;

@@ -17,7 +17,9 @@ public class MunicipalityController {
 
 
     @GetMapping
-    public Page<Municipality> getAllMUnicipalities(@RequestParam int page, @RequestParam int size, @RequestParam String sortBy) {
+    public Page<Municipality> getAllMUnicipalities(@RequestParam(defaultValue = "0") int page,
+                                                   @RequestParam(defaultValue = "10") int size,
+                                                   @RequestParam(defaultValue = "id") String sortBy) {
         return municipalityService.findAll(page, size, sortBy);
     }
 

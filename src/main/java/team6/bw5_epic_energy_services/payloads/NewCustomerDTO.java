@@ -38,6 +38,7 @@ public record NewCustomerDTO(
         String contactPhoneNumb,
 
         String companyLogo,
+
         @NotNull(message = "Company type type is required")
         ClientType clientType,
 
