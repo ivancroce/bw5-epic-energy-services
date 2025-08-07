@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import team6.bw5_epic_energy_services.entities.User;
 import team6.bw5_epic_energy_services.exceptions.ValidationException;
 import team6.bw5_epic_energy_services.payloads.UserRegistrationDTO;
@@ -43,7 +44,7 @@ public class UserController {
         return currentUser;
     }
 
- 
+
     @PutMapping("/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public User findByIdAndUpdate(@PathVariable UUID userId, @RequestBody @Validated UserUpdateDTO body, BindingResult validationResult) {
@@ -75,5 +76,27 @@ public class UserController {
             throw new ValidationException(errors);
         }
         return userService.save(body);
+
     }
+
+    @PatchMapping("/{userId}/avatar")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public User uploadImage(@RequestParam("avatar") MultipartFile file, @PathVariable UUID userId) {
+
+        System.out.println(file.getOriginalFilename());
+        System.out.println(file.getSize());
+
+        return this.userService.uploadAvatar(file, userId);
+    }
+
+    @PatchMapping("/me/avatar")
+    public User uploadImageMe(@RequestParam("avatar") MultipartFile file,
+                              @AuthenticationPrincipal User currentUser) {
+
+        System.out.println(file.getOriginalFilename());
+        System.out.println(file.getSize());
+
+        return this.userService.uploadAvatar(file, currentUser.getId());
+    }
+
 }

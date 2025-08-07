@@ -1,5 +1,7 @@
 package team6.bw5_epic_energy_services.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -7,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import team6.bw5_epic_energy_services.entities.Role;
 import team6.bw5_epic_energy_services.entities.User;
 import team6.bw5_epic_energy_services.exceptions.BadRequestException;
@@ -19,6 +22,7 @@ import team6.bw5_epic_energy_services.repositories.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -29,6 +33,8 @@ public class UserService {
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private Cloudinary imgUploader;
 
     public Page<User> findAllUsers(int page, int size, String sortBy) {
         if (size > 50) size = 50;
@@ -122,5 +128,18 @@ public class UserService {
 
     public User tryFindByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
+    }
+
+    public User uploadAvatar(MultipartFile file, UUID userId) {
+        try {
+            User found = this.findById(userId);
+            Map result = imgUploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            String imgURL = (String) result.get("url");
+            found.setAvatar(imgURL);
+            return userRepository.save(found);
+
+        } catch (Exception e) {
+            throw new BadRequestException("Problems while saving file.");
+        }
     }
 }
