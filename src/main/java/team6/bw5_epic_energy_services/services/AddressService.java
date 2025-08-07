@@ -13,6 +13,7 @@ import team6.bw5_epic_energy_services.exceptions.BadRequestException;
 import team6.bw5_epic_energy_services.exceptions.NotFoundException;
 import team6.bw5_epic_energy_services.payloads.NewAddressDTO;
 import team6.bw5_epic_energy_services.repositories.AddressRepository;
+import team6.bw5_epic_energy_services.repositories.CustomersRepository;
 import team6.bw5_epic_energy_services.repositories.MunicipalityRepository;
 
 import java.util.UUID;
@@ -25,6 +26,9 @@ public class AddressService {
 
     @Autowired
     private MunicipalityRepository municipalityRepository;
+
+    @Autowired
+    private CustomersRepository customersRepository;
 
     //----------------------------FIND ALL-----------------------------------------------------------
     public Page<Address> findAll(int pageNumber, int pageSize, String sortBy) {
@@ -86,6 +90,9 @@ public class AddressService {
 
     public void deleteAddress(UUID addressId) {
         Address a = findAddressById(addressId);
+        if (customersRepository.existsByLegalAddressOrOperationalAddress(a, a)) {
+            throw new BadRequestException("Cannot delete the address with ID " + addressId + " because it is currently in use by one or more customers.");
+        }
         addressRepository.delete(a);
         log.info("The address" + a.getStreet() + " has been deleted");
     }
