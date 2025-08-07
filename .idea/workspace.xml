@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f758cb12-fd13-45d4-9e70-1a5b3583e08f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/Bw5EpicEnergyServicesApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/controllers/AddressController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/controllers/AuthorizationController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/controllers/CustomerController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/controllers/InvoiceController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/controllers/InvoiceStatusController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/controllers/MunicipalityController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/controllers/ProvinceController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/controllers/RoleController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/controllers/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/entities/Address.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/entities/Customer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/entities/Invoice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/entities/InvoiceStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/entities/Municipality.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/entities/Province.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/entities/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/entities/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/entities/enums/ClientType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/exceptions/BadRequestException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/exceptions/ExceptionsHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/exceptions/NotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/exceptions/UnauthorizedException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/exceptions/ValidationException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/CustomerResponseDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/ErrorDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/ErrorsWithListDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/InvoiceResponseDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/InvoiceStatusResponseDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/NewAddressDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/NewCustomerDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/NewInvoiceDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/NewInvoiceStatusDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/NewMunicipalityDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/NewProvinceDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/RoleDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/RoleRespDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/UserLoginDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/UserLoginRespDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/UserRegistrationDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/UserRespDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/payloads/UserUpdateDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/repositories/AddressRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/repositories/CustomersRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/repositories/InvoicesRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/repositories/InvoicesStatusRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/repositories/MunicipalityRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/repositories/ProvinceRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/repositories/RoleRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/repositories/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/runners/AdminRunner.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/runners/CsvReaderRunner.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/runners/DatabaseInitializer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/security/JWTCheckerFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/security/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/services/AddressService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/services/AuthorizationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/services/CustomerService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/services/InvoiceService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/services/InvoiceStatusService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/services/MunicipalityService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/services/ProvinceService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/services/RoleService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/services/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/servicies/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/tools/JWTTools.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/team6/bw5_epic_energy_services/tools/MailgunSender.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/comuni-italiani.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/province-italiane.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/team6/bw5_epic_energy_services/Bw5EpicEnergyServicesApplicationTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;ivancroce&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ivancroce/bw5-epic-energy-services.git&quot;,
+    &quot;accountId&quot;: &quot;0f6c3b9f-f97e-4014-abad-f9722acd5942&quot;
+  }
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="OptimizeOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="30ol9fWQRxczYSNtfsqf0ap01dL" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Bw5EpicEnergyServicesApplication.executor": "Run",
+    "Application.DataAnalyzer.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "feature-mailgun",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "rearrange.code.on.save": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\IVAN\Documents\Epicode\Backend\bw5-epic-energy-services\src\main\resources" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Bw5EpicEnergyServicesApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="team6.bw5_epic_energy_services.Bw5EpicEnergyServicesApplication" />
+      <module name="bw5-epic-energy-services" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="team6.bw5_epic_energy_services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Bw5EpicEnergyServicesApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f758cb12-fd13-45d4-9e70-1a5b3583e08f" name="Changes" comment="" />
+      <created>1754301659130</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1754301659130</updated>
+    </task>
+    <servers />
+  </component>
+</project>
