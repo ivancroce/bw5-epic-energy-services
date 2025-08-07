@@ -8,10 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import team6.bw5_epic_energy_services.entities.Address;
+import team6.bw5_epic_energy_services.entities.Municipality;
 import team6.bw5_epic_energy_services.exceptions.BadRequestException;
 import team6.bw5_epic_energy_services.exceptions.NotFoundException;
 import team6.bw5_epic_energy_services.payloads.NewAddressDTO;
 import team6.bw5_epic_energy_services.repositories.AddressRepository;
+import team6.bw5_epic_energy_services.repositories.CustomersRepository;
+import team6.bw5_epic_energy_services.repositories.MunicipalityRepository;
 
 import java.util.UUID;
 
@@ -20,6 +23,12 @@ import java.util.UUID;
 public class AddressService {
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private MunicipalityRepository municipalityRepository;
+
+    @Autowired
+    private CustomersRepository customersRepository;
 
     //----------------------------FIND ALL-----------------------------------------------------------
     public Page<Address> findAll(int pageNumber, int pageSize, String sortBy) {
@@ -30,15 +39,30 @@ public class AddressService {
 
     //------------------------------SAVE-----------------------------------------------
     public Address save(NewAddressDTO payload) {
-        this.addressRepository.findByStreet(payload.street()).ifPresent(address -> {
-            throw new BadRequestException("Address " + address.getStreet() + " already exists in our system");
+        Municipality municipality = this.municipalityRepository.findById(payload.municipalityId())
+                .orElseThrow(() -> new NotFoundException("Municipality with ID " + payload.municipalityId() + " not found!"));
+
+        addressRepository.findByStreetAndBuildingNumberAndPostalCodeAndMunicipality(
+                payload.street(),
+                payload.buildingNumber(),
+                payload.postalCode(),
+                municipality
+        ).ifPresent(address -> {
+            throw new BadRequestException("Address already exists with ID: " + address.getId());
         });
-        Address newAddress = new Address(payload.street(), payload.buildingNumber(), payload.location(), payload.postalCode(), payload.municipality());
+
+        Address newAddress = new Address(
+                payload.street(),
+                payload.buildingNumber(),
+                payload.location(),
+                payload.postalCode(),
+                municipality
+        );
+
         Address savedAddress = this.addressRepository.save(newAddress);
-
-        log.info("Address " + savedAddress.getStreet() + " has been successfully saved");
-
+        log.info("Address {} has been successfully saved", savedAddress.getStreet());
         return savedAddress;
+
     }
 
     public Address findAddressById(UUID addressId) {
@@ -47,23 +71,28 @@ public class AddressService {
 
     public Address findAddressByIdAndUpdate(UUID addressId, NewAddressDTO payload) {
 
-        Address foundAddress = findAddressById(addressId);
+        Address foundAddress = this.findAddressById(addressId);
+
+        Municipality municipality = this.municipalityRepository.findById(payload.municipalityId())
+                .orElseThrow(() -> new NotFoundException("Municipality with ID " + payload.municipalityId() + " not found!"));
 
         foundAddress.setStreet(payload.street());
         foundAddress.setBuildingNumber(payload.buildingNumber());
         foundAddress.setLocation(payload.location());
         foundAddress.setPostalCode(payload.postalCode());
-        foundAddress.setMunicipality(payload.municipality());
+        foundAddress.setMunicipality(municipality);
 
-        Address updatedAddress = addressRepository.save(foundAddress);
+        log.info("Address " + foundAddress + " has been updated");
 
-        log.info("Address " + updatedAddress.getStreet() + " has been updated");
+        return addressRepository.save(foundAddress);
 
-        return updatedAddress;
     }
 
     public void deleteAddress(UUID addressId) {
         Address a = findAddressById(addressId);
+        if (customersRepository.existsByLegalAddressOrOperationalAddress(a, a)) {
+            throw new BadRequestException("Cannot delete the address with ID " + addressId + " because it is currently in use by one or more customers.");
+        }
         addressRepository.delete(a);
         log.info("The address" + a.getStreet() + " has been deleted");
     }

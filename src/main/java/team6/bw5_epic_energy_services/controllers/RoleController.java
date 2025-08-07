@@ -1,10 +1,9 @@
 package team6.bw5_epic_energy_services.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import team6.bw5_epic_energy_services.entities.Role;
 import team6.bw5_epic_energy_services.payloads.RoleDTO;
 import team6.bw5_epic_energy_services.payloads.RoleRespDTO;
@@ -21,4 +20,14 @@ public class RoleController {
         Role newRole = this.roleService.save(body);
         return new RoleRespDTO(newRole.getId());
     }
+
+
+    @GetMapping("")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Page<Role> findAll(@RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "10") int size,
+                              @RequestParam(defaultValue = "id") String sortBy) {
+        return roleService.findAll(page, size, sortBy);
+    }
+
 }

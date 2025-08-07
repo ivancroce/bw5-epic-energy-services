@@ -8,7 +8,7 @@ public record UserRegistrationDTO(
         @NotEmpty(message = "Username is required.")
         @Size(min = 3, max = 20, message = "Username must be between 3 and  20 characters. ")
         String username,
-        @Email(message = "The entered email is not valid.")
+        @Email(message = "The email is not valid.")
         @NotEmpty(message = "Email is required.")
         String email,
         @NotEmpty(message = "Password is required.")

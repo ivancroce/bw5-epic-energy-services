@@ -3,10 +3,10 @@ package team6.bw5_epic_energy_services.payloads;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import team6.bw5_epic_energy_services.entities.Address;
 import team6.bw5_epic_energy_services.entities.enums.ClientType;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public record NewCustomerDTO(
         @NotEmpty(message = "The Company must have a name")
@@ -16,10 +16,8 @@ public record NewCustomerDTO(
         @Email
         @NotEmpty(message = "The Company must have an email")
         String email,
-        @NotNull(message = "An insert date is required")
-        LocalDate insertDate,
         //TODO:dovremmo cambiare il costruttore per fare in modo che alla creazione si setti ina utomatico come insertDate
-        @NotNull(message = "A last contact date date is required")
+
         LocalDate lastContactDate,
         @NotNull(message = "The annual revenue is required")
         Double annualRevenue,
@@ -38,11 +36,12 @@ public record NewCustomerDTO(
         String contactPhoneNumb,
 
         String companyLogo,
+
         @NotNull(message = "Company type type is required")
         ClientType clientType,
 
         @NotNull(message = "The Company must have a legal address")
-        Address legalAddress,
+        UUID legalAddressId,
         //TODO:dovremmo cambiare il costruttore per fare in modo che alla creazione si setti ina utomatico come legalAddress
-        Address operationalAddress) {
+        UUID operationalAddressId) {
 }

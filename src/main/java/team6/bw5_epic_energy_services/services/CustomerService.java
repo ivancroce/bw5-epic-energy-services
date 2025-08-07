@@ -13,6 +13,7 @@ import team6.bw5_epic_energy_services.entities.Customer;
 import team6.bw5_epic_energy_services.exceptions.BadRequestException;
 import team6.bw5_epic_energy_services.exceptions.NotFoundException;
 import team6.bw5_epic_energy_services.payloads.NewCustomerDTO;
+import team6.bw5_epic_energy_services.repositories.AddressRepository;
 import team6.bw5_epic_energy_services.repositories.CustomersRepository;
 
 import java.time.LocalDate;
@@ -23,6 +24,9 @@ import java.util.UUID;
 public class CustomerService {
     @Autowired
     private CustomersRepository customersRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
 
 
     public Customer saveCustomer(NewCustomerDTO payload) {
@@ -39,33 +43,42 @@ public class CustomerService {
             throw new BadRequestException("A customer with PEC " + payload.pec() + " already exists in our system");
         });
 
-        Address operationalAddress = payload.operationalAddress() != null
-                ? payload.operationalAddress()
-                : payload.legalAddress();
+        Address legalAddress = this.addressRepository.findById(payload.legalAddressId())
+                .orElseThrow(() -> new NotFoundException("Address with ID " + payload.legalAddressId() + " not found!"));
 
+        Address operationalAddress;
 
+        if (payload.operationalAddressId() != null) {
+            operationalAddress = addressRepository.findById(payload.operationalAddressId())
+                    .orElseThrow(() -> new NotFoundException("Operational Address with ID " + payload.operationalAddressId() + " not found!"));
+        } else {
+            operationalAddress = legalAddress;
+        }
+
+        LocalDate insertDate = LocalDate.now();
         LocalDate lastContactDate = payload.lastContactDate() != null
                 ? payload.lastContactDate()
-                : payload.insertDate();
+                : insertDate;
 
-        Customer newCustomer = new Customer(
-                payload.companyName(),
-                payload.vatNumb(),
-                payload.email(),
-                payload.insertDate(),
-                lastContactDate,
-                payload.annualRevenue(),
-                payload.pec(),
-                payload.phoneNumb(),
-                payload.contactEmail(),
-                payload.contactFirstName(),
-                payload.contactLastName(),
-                payload.contactPhoneNumb(),
-                payload.companyLogo(),
-                payload.clientType(),
-                payload.legalAddress(),
-                operationalAddress
-        );
+        Customer newCustomer = new Customer();
+
+
+        newCustomer.setCompanyName(payload.companyName());
+        newCustomer.setVatNumb(payload.vatNumb());
+        newCustomer.setEmail(payload.email());
+        newCustomer.setAnnualRevenue(payload.annualRevenue());
+        newCustomer.setPec(payload.pec());
+        newCustomer.setPhoneNumb(payload.phoneNumb());
+        newCustomer.setContactEmail(payload.contactEmail());
+        newCustomer.setContactFirstName(payload.contactFirstName());
+        newCustomer.setContactLastName(payload.contactLastName());
+        newCustomer.setContactPhoneNumb(payload.contactPhoneNumb());
+        newCustomer.setCompanyLogo(payload.companyLogo());
+        newCustomer.setClientType(payload.clientType());
+        newCustomer.setInsertDate(insertDate);
+        newCustomer.setLastContactDate(lastContactDate);
+        newCustomer.setLegalAddress(legalAddress);
+        newCustomer.setOperationalAddress(operationalAddress);
 
         Customer savedCustomer = customersRepository.save(newCustomer);
 
@@ -74,9 +87,9 @@ public class CustomerService {
         return savedCustomer;
     }
 
-    public Page<Customer> findAllCustomers(int pageNumb, int pageSize) {
+    public Page<Customer> findAllCustomers(int pageNumb, int pageSize, String sortBy) {
         if (pageSize > 50) pageSize = 50;
-        Pageable pageable = PageRequest.of(pageNumb, pageSize);
+        Pageable pageable = PageRequest.of(pageNumb, pageSize, Sort.by(sortBy).descending());
         return customersRepository.findAll(pageable);
     }
 
@@ -87,15 +100,27 @@ public class CustomerService {
     public Customer findCustomerByIdAndUpdate(UUID customerId, NewCustomerDTO payload) {
         Customer foundCustomer = findCustomerById(customerId);
 
-        Address operationalAddress = payload.operationalAddress() != null
-                ? payload.operationalAddress()
-                : payload.legalAddress();
+        Address legalAddress = this.addressRepository.findById(payload.legalAddressId())
+                .orElseThrow(() -> new NotFoundException("Address with ID " + payload.legalAddressId() + " not found!"));
+
+        Address operationalAddress;
+
+        if (payload.operationalAddressId() != null) {
+            operationalAddress = addressRepository.findById(payload.operationalAddressId())
+                    .orElseThrow(() -> new NotFoundException("Operational Address with ID " + payload.operationalAddressId() + " not found!"));
+        } else {
+            operationalAddress = legalAddress;
+        }
+
+        LocalDate insertDate = LocalDate.now();
+        LocalDate lastContactDate = payload.lastContactDate() != null
+                ? payload.lastContactDate()
+                : insertDate;
+
 
         foundCustomer.setCompanyName(payload.companyName());
         foundCustomer.setVatNumb(payload.vatNumb());
         foundCustomer.setEmail(payload.email());
-        foundCustomer.setInsertDate(payload.insertDate());
-        foundCustomer.setLastContactDate(payload.lastContactDate());
         foundCustomer.setAnnualRevenue(payload.annualRevenue());
         foundCustomer.setPec(payload.pec());
         foundCustomer.setPhoneNumb(payload.phoneNumb());
@@ -105,7 +130,9 @@ public class CustomerService {
         foundCustomer.setContactPhoneNumb(payload.contactPhoneNumb());
         foundCustomer.setCompanyLogo(payload.companyLogo());
         foundCustomer.setClientType(payload.clientType());
-        foundCustomer.setLegalAddress(payload.legalAddress());
+        foundCustomer.setInsertDate(insertDate);
+        foundCustomer.setLastContactDate(lastContactDate);
+        foundCustomer.setLegalAddress(legalAddress);
         foundCustomer.setOperationalAddress(operationalAddress);
 
         Customer updatedCustomer = customersRepository.save(foundCustomer);
@@ -153,6 +180,8 @@ public class CustomerService {
 
     public Page<Customer> searchCustomers(String name,
                                           Double revenue,
+                                          Double min,
+                                          Double max,
                                           LocalDate insertDate,
                                           LocalDate lastContactDate,
                                           int page,
@@ -167,8 +196,20 @@ public class CustomerService {
                 name == null ? null : builder.like(builder.lower(root.get("companyName")), "%" + name.toLowerCase() + "%");
 
         //fatturato annnuo - in questo modo filtra esattamente per l'importo (nel evcchio metodo io cercavo per valori superiori o inferiori)
-        Specification<Customer> revenueSpec = (root, query, builder) ->
+        Specification<Customer> exRevenueSpec = (root, query, builder) ->
                 revenue == null ? null : builder.equal(root.get("annualRevenue"), revenue);
+
+        Specification<Customer> revenueSpec = (root, query, builder) -> {
+            if (min == null && max == null) {
+                return null;
+            } else if (min != null && max != null) {
+                return builder.between(root.get("annualRevenue"), min, max);
+            } else if (min != null) {
+                return builder.greaterThanOrEqualTo(root.get("annualRevenue"), min);
+            } else { // maxRevenue != null
+                return builder.lessThanOrEqualTo(root.get("annualRevenue"), max);
+            }
+        };
 
         //data inserimento - in questo modo filtra esattamente per la data (nel evcchio metodo io cercavo per valori superiori o inferiori)
         Specification<Customer> insertDateSpec = (root, query, builder) ->

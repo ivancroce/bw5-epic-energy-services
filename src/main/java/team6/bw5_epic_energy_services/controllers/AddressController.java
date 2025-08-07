@@ -35,7 +35,9 @@ public class AddressController {
     }
 
     @GetMapping
-    public Page<Address> getAllAddresses(@RequestParam int page, @RequestParam int size, @RequestParam String sortBy) {
+    public Page<Address> getAllAddresses(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "10") int size,
+                                         @RequestParam(defaultValue = "id") String sortBy) {
         return addressService.findAll(page, size, sortBy);
     }
 

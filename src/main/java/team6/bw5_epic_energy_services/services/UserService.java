@@ -18,6 +18,7 @@ import team6.bw5_epic_energy_services.repositories.RoleRepository;
 import team6.bw5_epic_energy_services.repositories.UserRepository;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -41,10 +42,10 @@ public class UserService {
 
     public UserRespDTO save(UserRegistrationDTO body) {
         userRepository.findByEmail(body.email()).ifPresent(user -> {
-            throw new BadRequestException("The Email " + user.getEmail() + " it is already in use!");
+            throw new BadRequestException("The Email " + user.getEmail() + " is already in use!");
         });
         userRepository.findByUsername(body.username()).ifPresent(user -> {
-            throw new BadRequestException("The username " + user.getUsername() + " it is already in use!");
+            throw new BadRequestException("The username " + body.username() + " is already in use!");
         });
 
         //CREAZIONE USER
@@ -60,6 +61,30 @@ public class UserService {
         Role defaultRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new RuntimeException("The role 'USER' was not found in the database."));
         newUser.setRoleList(Collections.singletonList(defaultRole));
+
+        User savedUser = userRepository.save(newUser);
+        return new UserRespDTO(savedUser.getId());
+    }
+
+    public UserRespDTO saveAdmin(UserRegistrationDTO body) {
+        userRepository.findByEmail(body.email()).ifPresent(user -> {
+            throw new BadRequestException("The Email " + user.getEmail() + " is already in use!");
+        });
+        userRepository.findByUsername(body.username()).ifPresent(user -> {
+            throw new BadRequestException("The username " + user.getUsername() + " is already in use!");
+        });
+
+        User newUser = new User(
+                body.username(),
+                body.email(),
+                passwordEncoder.encode(body.password()),
+                body.name(),
+                body.surname()
+        );
+
+        Role adminRole = roleRepository.findByName("ADMIN")
+                .orElseThrow(() -> new RuntimeException("The role 'ADMIN' was not found in the database."));
+        newUser.setRoleList(List.of(adminRole));
 
         User savedUser = userRepository.save(newUser);
         return new UserRespDTO(savedUser.getId());
@@ -84,6 +109,15 @@ public class UserService {
     public void findByIdAndDelete(UUID userId) {
         User found = this.findById(userId);
         userRepository.delete(found);
+    }
+
+    public void addRoleToUser(UUID userId, String roleName) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Role role = roleRepository.findByName(roleName)
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+        user.getRoleList().add(role);
+        userRepository.save(user);
     }
 
     public User tryFindByEmail(String email) {
