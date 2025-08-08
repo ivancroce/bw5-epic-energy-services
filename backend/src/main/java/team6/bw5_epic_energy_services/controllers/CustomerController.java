@@ -10,11 +10,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import team6.bw5_epic_energy_services.entities.Customer;
 import team6.bw5_epic_energy_services.exceptions.ValidationException;
+import team6.bw5_epic_energy_services.payloads.EmailResponseDTO;
 import team6.bw5_epic_energy_services.payloads.NewCustomerDTO;
 import team6.bw5_epic_energy_services.services.CustomerService;
 import team6.bw5_epic_energy_services.tools.MailgunSender;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -98,13 +100,19 @@ public class CustomerController {
     @PostMapping("/{customerId}/send-contact-email")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public String sendDefaultEmailToCustomer(@PathVariable UUID customerId) {
+    public EmailResponseDTO sendDefaultEmailToCustomer(@PathVariable UUID customerId) {
 
         Customer customer = customerService.findCustomerById(customerId);
 
         mailgunSender.sendContactEmail(customer);
 
-        return "Email was sent to " + customer.getContactEmail();
+        EmailResponseDTO responseBody = new EmailResponseDTO(
+                "Email sent successfully!",
+                customer.getContactEmail(),
+                LocalDateTime.now()
+        );
+
+        return responseBody;
     }
 
 //    @GetMapping("/search/name")
